@@ -1,0 +1,45 @@
+name: CI Workflow
+
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  ci-jobs:
+    name: CI Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          enable-cache: true
+
+      - name: Set up python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          python-version-file: "pyproject-local.toml"
+
+      - name: Install dependencies
+        run: uv sync --all-extras --config-file pyproject-local.toml
+
+      - name: Run pytest & generate HTML report
+        run: |
+          uv run pytest \
+            --disable-warnings \
+            --cov=./src \
+            --cov-report=html
+
+      - name: Upload coverage HTML report
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-html
+          path: htmlcov

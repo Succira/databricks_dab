@@ -14,7 +14,7 @@ def spark():
         from databricks.connect import DatabricksSession
         spark = DatabricksSession.builder.getOrCreate()
         print("Using databricks connect ...")
-    except ImportError:
+    except Exception:
         try:
             from pyspark.sql import SparkSession
 
@@ -22,5 +22,4 @@ def spark():
             print("Using local SparkSession ...")
         except:
             print("Neither worked")
-    yield spark
-    spark.stop()
+    return spark

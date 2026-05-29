@@ -34,7 +34,7 @@ jobs:
             --cov-report=html
 
       - name: Upload coverage HTML report
-        user: action/upload-artifact@v7
+        uses: action/upload-artifact@v7
         with:
           name: coverage-html
           path: htmlcov

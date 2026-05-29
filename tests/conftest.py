@@ -22,5 +22,4 @@ def spark():
             print("Using local SparkSession ...")
         except:
             print("Neither worked")
-    yield spark
-    spark.stop()
+    return spark

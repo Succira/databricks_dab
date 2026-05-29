@@ -1,8 +1,4 @@
 import datetime
-import os, sys
-print(*sys.path, sep='\n')
-
-
 from src.citibike.citibike_utils import get_trip_duration_mins
 
 

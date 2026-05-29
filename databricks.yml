@@ -12,9 +12,6 @@ variables:
   catalog:
     description: The catalog to use
     default: "citibike_dev"
-  schema:
-    description: The schema to use
-
 
 targets:
   dev:
@@ -27,20 +24,18 @@ targets:
     workspace:
       host: https://adb-7405607996355770.10.azuredatabricks.net
     variables:
-      catalog: dbw_cicd_dev
-      schema: dev
+      catalog: citibike_dev
 
   test:
     mode: production
+    variables: 
+      catalog: "citibike_test"
     presets:
       name_prefix: '[test] '
     workspace:
       host: https://adb-7405605681380645.5.azuredatabricks.net
       # We explicitly deploy to /Workspace/Users/adam@succira.onmicrosoft.com to make sure we only have a single copy.
       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
-    variables:
-      catalog: dbw_cicd_dev
-      schema: prod
     permissions:
       - user_name: adam@succira.onmicrosoft.com
         level: CAN_MANAGE
@@ -48,13 +43,12 @@ targets:
       
   prod:
     mode: production
+    variables: 
+      catalog: "citibike_prod"
     workspace:
       host: https://adb-7405619566871631.11.azuredatabricks.net
       # We explicitly deploy to /Workspace/Users/adam@succira.onmicrosoft.com to make sure we only have a single copy.
       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
-    variables:
-      catalog: dbw_cicd_dev
-      schema: prod
     permissions:
       - user_name: adam@succira.onmicrosoft.com
         level: CAN_MANAGE

@@ -1,2 +1,2 @@
-# . /home/succira/projects/spark/.venv/bin/activate
-. .venv/bin/activate
+. /home/succira/projects/spark/.venv/bin/activate  #local spark
+# . .venv/bin/activate

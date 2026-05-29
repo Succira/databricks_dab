@@ -11,6 +11,7 @@ include:
 variables:
   catalog:
     description: The catalog to use
+    default: "citibike_dev"
   schema:
     description: The schema to use
 

@@ -21,6 +21,14 @@ dev = [
     "ipykernel",
 ]
 
+local = [
+    "pandas",
+    "pygments",
+    "pyspark",
+    "pytest",
+    "pytest-cov",
+]
+
 [project.scripts]
 main = "databricks_dab.main:main"
 

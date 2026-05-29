@@ -1,5 +1,6 @@
 name: CI Workflow
 
+
 on:
   push:
     branches:
@@ -34,7 +35,7 @@ jobs:
             --cov-report=html
 
       - name: Upload coverage HTML report
-        uses: action/upload-artifact@v7
+        uses: action/upload-artifact@v6
         with:
           name: coverage-html
           path: htmlcov

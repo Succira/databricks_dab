@@ -37,8 +37,11 @@ targets:
       # We explicitly deploy to /Workspace/Users/adam@succira.onmicrosoft.com to make sure we only have a single copy.
       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
     permissions:
-      - user_name: adam@succira.onmicrosoft.com
+      - service_principal_name: 46545b8c-cba7-49ae-ad1f-f1b45b702040
         level: CAN_MANAGE
+    run_as:
+      service_principal_name: 46545b8c-cba7-49ae-ad1f-f1b45b702040
+
 
       
   prod:
@@ -50,5 +53,9 @@ targets:
       # We explicitly deploy to /Workspace/Users/adam@succira.onmicrosoft.com to make sure we only have a single copy.
       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
     permissions:
-      - user_name: adam@succira.onmicrosoft.com
+      - service_principal_name: a654f8e9-813f-44e9-878e-2e87f624be52
         level: CAN_MANAGE
+    run_as:
+      service_principal_name: a654f8e9-813f-44e9-878e-2e87f624be52
+
+

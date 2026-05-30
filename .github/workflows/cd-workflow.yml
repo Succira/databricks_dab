@@ -46,8 +46,7 @@ jobs:
             --target test \
             --profile TEST
 
-jobs:
-  cd-deploy-test:
+  cd-deploy-prod:
     name: Deploy to PROD
     needs: cd-deploy-test
     runs-on: ubuntu-latest

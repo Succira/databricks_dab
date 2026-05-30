@@ -1,0 +1,89 @@
+name: CD Workflow
+
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  cd-deploy-test:
+    name: Deploy to TEST
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          enable-cache: true
+
+      - name: Set up python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install Databricks CLI
+        run: curl -fsSL http://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Configure Databricks profile
+        run: |
+          cat <<EOF > ~/.databrickscfg
+          [TEST]
+          host  = https://adb-7405605681380645.5.azuredatabricks.net
+          azure_tenant_id     = ${{ secrets.AZURE_TENANT_ID }}
+          azure_client_id     = ${{ secrets.AZURE_CLIENT_ID }}
+          azure_client_secret = ${{ secrets.AZURE_CLIENT_SECRET }}
+          EOF
+
+      - name: Deploy to TEST
+        run: |
+          databricks bundle deploy \
+            --target test \
+            --profile TEST
+
+jobs:
+  cd-deploy-test:
+    name: Deploy to PROD
+    needs: cd-deploy-test
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          enable-cache: true
+
+      - name: Set up python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+        
+      - name: Install Databricks CLI
+        run: curl -fsSL http://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Configure Databricks profile
+        run: |
+          cat <<EOF > ~/.databrickscfg
+          [PROD]
+          host  = https://adb-7405619566871631.11.azuredatabricks.net/
+          azure_tenant_id     = ${{ secrets.AZURE_TENANT_ID }}
+          azure_client_id     = ${{ secrets.AZURE_CLIENT_ID }}
+          azure_client_secret = ${{ secrets.AZURE_CLIENT_SECRET }}
+          EOF
+
+      - name: Deploy to PROD
+        run: |
+          databricks bundle deploy \
+            --target prod \
+            --profile PROD
